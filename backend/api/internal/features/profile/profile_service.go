@@ -30,51 +30,76 @@ func (s *profileService) GetProfile(userID string) (*Profile, error) {
 		return nil, err
 	}
 
-	var wg sync.WaitGroup
-	var user *users.User
-	userPosts := make([]posts.Post, 0)
-	var followers, following int64 = 0, 0
-
-	var errs []error
 	var (
-		e1 error
-		e2 error
-		e3 error
-		e4 error
+		wg                   sync.WaitGroup
+		user                 *users.User
+		followers, following int64 = 0, 0
+		firstErr             error
+		userPosts            = make([]posts.Post, 0)
+		mu                   = &sync.Mutex{}
 	)
 
+	setErr := func(err error) {
+		mu.Lock()
+		if firstErr == nil {
+			firstErr = err
+		}
+		mu.Unlock()
+	}
+
 	wg.Go(func() {
-		user, e1 = s.userService.GetUserById(uid)
+		u, err := s.userService.GetUserById(uid)
 		if err != nil {
-			errs = append(errs, e1)
+			setErr(err)
+			return
 		}
+		if u == nil {
+			setErr(errors.New("user not found"))
+		}
+
+		mu.Lock()
+		user = u
+		mu.Unlock()
 	})
 
 	wg.Go(func() {
-		userPosts, e2 = s.postService.GetPostsByUserId(uid)
-		if e2 != nil {
-			errs = append(errs, e2)
+		uP, err := s.postService.GetPostsByUserId(uid)
+		if err != nil {
+			setErr(err)
+			return
 		}
+
+		mu.Lock()
+		userPosts = uP
+		mu.Unlock()
 	})
 
 	wg.Go(func() {
-		followers, e3 = s.followService.GetFollowersCount(uid)
-		if e3 != nil {
-			errs = append(errs, e3)
+		fCount, err := s.followService.GetFollowersCount(uid)
+		if err != nil {
+			setErr(err)
+			return
 		}
+		mu.Lock()
+		followers = fCount
+		mu.Unlock()
 	})
 
 	wg.Go(func() {
-		following, e4 = s.followService.GetFollowingCount(uid)
-		if e4 != nil {
-			errs = append(errs, e4)
+		followingCount, err := s.followService.GetFollowingCount(uid)
+		if err != nil {
+			setErr(err)
+			return
 		}
+		mu.Lock()
+		following = followingCount
+		mu.Unlock()
 	})
 
 	wg.Wait()
 
-	if len(errs) > 0 {
-		return nil, errors.New("cannot get profile")
+	if firstErr != nil {
+		return nil, firstErr
 	}
 
 	profile := &Profile{

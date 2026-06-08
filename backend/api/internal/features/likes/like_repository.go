@@ -103,3 +103,15 @@ func (r *likeRepository) hasLikeUnscoped(postId, userId primitive.ObjectID) (boo
 
 	return count > 0, nil
 }
+
+func (r *likeRepository) GetLikesCountByPostId(postId primitive.ObjectID) (int64, error) {
+	ctx, cancel := helpers.GenerateContext()
+	defer cancel()
+
+	count, err := r.collection.CountDocuments(ctx, bson.M{"postId": postId, "status": 1})
+	if err != nil {
+		return 0, errors.New("cannot get likes by post id")
+	}
+
+	return count, nil
+}

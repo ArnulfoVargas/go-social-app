@@ -9,4 +9,5 @@ type LikeRepository interface {
 	AddLike(like Like) error
 	HasLike(postId, userId primitive.ObjectID) (bool, error)
 	DeleteLikesFromPost(postId primitive.ObjectID) error
+	GetLikesCountByPostId(postId primitive.ObjectID) (int64, error)
 }

@@ -30,7 +30,7 @@ func SetupPostRoutes(s fiber.Router, postHandler *PostHandler) {
 	g := s.Group("/posts", shared.Protected(shared.ParseJWT))
 
 	g.Post("/", postHandler.createPost)
-	g.Get("/suggested", postHandler.getSuggestedPosts)
+	// g.Get("/suggested", postHandler.getSuggestedPosts)
 	g.Get("/:id", postHandler.getPost)
 	g.Put("/:id", postHandler.updatePost)
 	g.Delete("/:id", postHandler.deletePost)
