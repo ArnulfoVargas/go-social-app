@@ -7,14 +7,16 @@ import (
 
 type CommentService interface {
 	AddComment(postId, userId, content string) error
-	GetComments(postId string) ([]Comment, error)
+	GetComments(postId string, limit int) ([]Comment, error)
+	GetCommentsCountById(postId string) (int64, error)
 	DeleteComment(commentId, userId string) error
 	UpdateComment(commentId, userId, content string) error
 }
 
 type CommentRepository interface {
 	AddComment(comment Comment) error
-	GetComments(postId primitive.ObjectID) ([]Comment, error)
+	GetComments(postId primitive.ObjectID, limit int) ([]Comment, error)
+	GetCommentsCountById(postId primitive.ObjectID) (int64, error)
 	DeleteComment(commentId primitive.ObjectID) error
 	UpdateComment(commentId primitive.ObjectID, object bson.M) error
 }

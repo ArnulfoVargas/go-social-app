@@ -7,11 +7,13 @@ import (
 )
 
 type Post struct {
-	ID        primitive.ObjectID `bson:"_id" json:"id"`
-	UserID    primitive.ObjectID `bson:"userId" json:"userId"`
-	Content   string             `bson:"content,omitempty" json:"content,omitempty"`
-	Status    uint8              `bson:"status,default=1" json:"status,omitempty"`
-	Media     []media.Media      `bson:"media,omitempty" json:"media,omitempty"`
-	CreatedAt primitive.DateTime `bson:"createdAt" json:"createdAt"`
-	UpdatedAt primitive.DateTime `bson:"updatedAt" json:"updatedAt"`
+	ID            primitive.ObjectID `bson:"_id" json:"id"`
+	UserID        primitive.ObjectID `bson:"userId" json:"userId"`
+	Content       string             `bson:"content,omitempty" json:"content,omitempty"`
+	Status        uint8              `bson:"status,default=1" json:"status,omitempty"`
+	Media         []media.Media      `bson:"media,omitempty" json:"media,omitempty"`
+	LikesCount    int                `bson:"likesCount" json:"likesCount"`
+	CommentsCount int                `bson:"commentsCount" json:"commentsCount"`
+	CreatedAt     primitive.DateTime `bson:"createdAt" json:"createdAt"`
+	UpdatedAt     primitive.DateTime `bson:"updatedAt" json:"updatedAt"`
 }

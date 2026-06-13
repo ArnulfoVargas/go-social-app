@@ -470,6 +470,59 @@ const docTemplate = `{
                 ],
                 "responses": {}
             }
+        },
+        "/api/v1/users/{id}/profile-picture": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Adds a profile picture to the user with the given ID",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Add profile picture",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Profile picture",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/users.SetProfilePictureResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Removes the profile picture from the user with the given ID",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Remove profile picture",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
@@ -563,6 +616,32 @@ const docTemplate = `{
                 }
             }
         },
+        "profile.Profile": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "$ref": "#/definitions/media.MediaResponse"
+                },
+                "followers": {
+                    "type": "integer"
+                },
+                "following": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "posts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/posts.PostResponse"
+                    }
+                }
+            }
+        },
         "shared.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -582,20 +661,20 @@ const docTemplate = `{
                 }
             }
         },
+        "users.SetProfilePictureResponse": {
+            "type": "object",
+            "properties": {
+                "avatarUrl": {
+                    "$ref": "#/definitions/media.MediaResponse"
+                }
+            }
+        },
         "users.UpdateProfileRequest": {
             "type": "object",
             "properties": {
                 "bio": {
                     "type": "string",
                     "maxLength": 500,
-                    "minLength": 3
-                },
-                "image": {
-                    "type": "string"
-                },
-                "lastname": {
-                    "type": "string",
-                    "maxLength": 50,
                     "minLength": 3
                 },
                 "name": {

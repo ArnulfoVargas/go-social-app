@@ -174,3 +174,12 @@ func (p *postService) GetSuggestedPosts(userId string, limit int) ([]Post, error
 
 	return p.postRepo.GetSuggestedPosts(uId, limit)
 }
+
+func (p *postService) GetLikesCountByPostId(postId string) (int64, error) {
+	id, err := helpers.ToObjectID(postId)
+	if err != nil {
+		return 0, err
+	}
+
+	return p.likeRepo.GetLikesCountByPostId(id)
+}

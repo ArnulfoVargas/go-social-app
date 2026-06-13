@@ -61,6 +61,23 @@ definitions:
           $ref: '#/definitions/posts.PostResponse'
         type: array
     type: object
+  profile.Profile:
+    properties:
+      avatar:
+        $ref: '#/definitions/media.MediaResponse'
+      followers:
+        type: integer
+      following:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      posts:
+        items:
+          $ref: '#/definitions/posts.PostResponse'
+        type: array
+    type: object
   shared.ErrorResponse:
     properties:
       error:
@@ -73,16 +90,15 @@ definitions:
       message:
         type: string
     type: object
+  users.SetProfilePictureResponse:
+    properties:
+      avatarUrl:
+        $ref: '#/definitions/media.MediaResponse'
+    type: object
   users.UpdateProfileRequest:
     properties:
       bio:
         maxLength: 500
-        minLength: 3
-        type: string
-      image:
-        type: string
-      lastname:
-        maxLength: 50
         minLength: 3
         type: string
       name:
@@ -336,6 +352,39 @@ paths:
       security:
       - BearerAuth: []
       summary: Update user
+      tags:
+      - users
+  /api/v1/users/{id}/profile-picture:
+    delete:
+      description: Removes the profile picture from the user with the given ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Remove profile picture
+      tags:
+      - users
+    post:
+      description: Adds a profile picture to the user with the given ID
+      parameters:
+      - description: Profile picture
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/users.SetProfilePictureResponse'
+      security:
+      - BearerAuth: []
+      summary: Add profile picture
       tags:
       - users
   /api/v1/users/follow/{id}:

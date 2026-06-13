@@ -13,6 +13,7 @@ type PostService interface {
 	GetPostsByUserId(userId string) ([]Post, error)
 	ToggleLike(postId string, userId string) error
 	GetSuggestedPosts(userId string, limit int) ([]Post, error)
+	GetLikesCountByPostId(postId string) (int64, error)
 }
 
 type PostRepository interface {
