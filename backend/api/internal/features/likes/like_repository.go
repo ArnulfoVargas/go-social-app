@@ -5,7 +5,6 @@ import (
 	"Server/internal/store"
 	"errors"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -80,7 +79,7 @@ func (r *likeRepository) LikePost(like Like) error {
 	return nil
 }
 
-func (r *likeRepository) DeleteLikesFromPost(postId primitive.ObjectID) error {
+func (r *likeRepository) DeleteLikesFromPost(postId bson.ObjectID) error {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -93,7 +92,7 @@ func (r *likeRepository) DeleteLikesFromPost(postId primitive.ObjectID) error {
 	return nil
 }
 
-func (r *likeRepository) HasLike(postId, userId primitive.ObjectID) (bool, error) {
+func (r *likeRepository) HasLike(postId, userId bson.ObjectID) (bool, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -105,7 +104,7 @@ func (r *likeRepository) HasLike(postId, userId primitive.ObjectID) (bool, error
 	return count > 0, nil
 }
 
-func (r *likeRepository) hasLikeUnscoped(postId, userId primitive.ObjectID) (bool, error) {
+func (r *likeRepository) hasLikeUnscoped(postId, userId bson.ObjectID) (bool, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -117,7 +116,7 @@ func (r *likeRepository) hasLikeUnscoped(postId, userId primitive.ObjectID) (boo
 	return count > 0, nil
 }
 
-func (r *likeRepository) GetLikesCountByPostId(postId primitive.ObjectID) (int64, error) {
+func (r *likeRepository) GetLikesCountByPostId(postId bson.ObjectID) (int64, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 

@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type mediaService struct {
@@ -50,7 +50,7 @@ func (m *mediaService) Upload(file *multipart.FileHeader) (*Media, error) {
 	}
 
 	media := &Media{
-		ID:       primitive.NewObjectID(),
+		ID:       bson.NewObjectID(),
 		URL:      uploadResult.SecureURL,
 		PublicID: uploadResult.PublicID,
 	}

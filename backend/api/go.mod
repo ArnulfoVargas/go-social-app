@@ -2,10 +2,7 @@ module Server
 
 go 1.26.2
 
-require (
-	github.com/swaggo/swag v1.16.6
-	go.mongodb.org/mongo-driver v1.17.9
-)
+require github.com/swaggo/swag v1.16.6
 
 require (
 	github.com/cloudinary/cloudinary-go/v2 v2.15.0
@@ -56,7 +53,7 @@ require (
 	golang.org/x/crypto v0.51.0
 	golang.org/x/mod v0.36.0 // indirect
 	golang.org/x/net v0.54.0 // indirect
-	golang.org/x/sync v0.21.0 // indirect
+	golang.org/x/sync v0.21.0
 	golang.org/x/sys v0.44.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/tools v0.45.0 // indirect

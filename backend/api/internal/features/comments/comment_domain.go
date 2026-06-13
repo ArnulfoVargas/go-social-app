@@ -1,7 +1,6 @@
 package comments
 
 import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -15,8 +14,8 @@ type CommentService interface {
 
 type CommentRepository interface {
 	AddComment(comment Comment) error
-	GetComments(postId primitive.ObjectID, limit int) ([]Comment, error)
-	GetCommentsCountById(postId primitive.ObjectID) (int64, error)
-	DeleteComment(commentId primitive.ObjectID) error
-	UpdateComment(commentId primitive.ObjectID, object bson.M) error
+	GetComments(postId bson.ObjectID, limit int) ([]Comment, error)
+	GetCommentsCountById(postId bson.ObjectID) (int64, error)
+	DeleteComment(commentId bson.ObjectID) error
+	UpdateComment(commentId bson.ObjectID, object bson.M) error
 }

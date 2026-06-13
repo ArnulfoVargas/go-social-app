@@ -1,7 +1,7 @@
 package follows
 
 import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type FollowService interface {
@@ -12,10 +12,10 @@ type FollowService interface {
 
 type FollowRepository interface {
 	FollowUser(follow Follow) error
-	UnfollowUser(userID, targetUserID primitive.ObjectID) error
-	UserIsFollowing(userID, targetUserID primitive.ObjectID) (bool, error)
-	GetFollowingCount(userID primitive.ObjectID) (int64, error)
-	GetFollowersCount(userID primitive.ObjectID) (int64, error)
-	GetFollowingIds(userID primitive.ObjectID) ([]primitive.ObjectID, error)
-	GetRelatedFollowSuggestions(userId primitive.ObjectID, followingIds []primitive.ObjectID, limit int) ([]primitive.ObjectID, error)
+	UnfollowUser(userID, targetUserID bson.ObjectID) error
+	UserIsFollowing(userID, targetUserID bson.ObjectID) (bool, error)
+	GetFollowingCount(userID bson.ObjectID) (int64, error)
+	GetFollowersCount(userID bson.ObjectID) (int64, error)
+	GetFollowingIds(userID bson.ObjectID) ([]bson.ObjectID, error)
+	GetRelatedFollowSuggestions(userId bson.ObjectID, followingIds []bson.ObjectID, limit int) ([]bson.ObjectID, error)
 }

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type followService struct {
@@ -50,9 +50,9 @@ func (s *followService) ToggleFollowUser(followerID, followingID string) (bool, 
 		return false, s.followRepo.UnfollowUser(followerId, followingId)
 	}
 
-	now := primitive.NewDateTimeFromTime(time.Now())
+	now := bson.NewDateTimeFromTime(time.Now())
 	follow := Follow{
-		ID:          primitive.NewObjectID(),
+		ID:          bson.NewObjectID(),
 		FollowerID:  followerId,
 		FollowingID: followingId,
 		CreatedAt:   now,

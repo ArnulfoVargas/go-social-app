@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v3"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -36,13 +36,13 @@ func (s *authService) Register(c fiber.Ctx, req RegisterRequest) (string, string
 	}
 
 	user := users.User{
-		ID:        primitive.NewObjectID(),
+		ID:        bson.NewObjectID(),
 		Name:      req.Name,
 		Email:     req.Email,
 		Password:  string(hash),
 		Status:    1,
-		CreatedAt: primitive.NewDateTimeFromTime(time.Now()),
-		UpdatedAt: primitive.NewDateTimeFromTime(time.Now()),
+		CreatedAt: bson.NewDateTimeFromTime(time.Now()),
+		UpdatedAt: bson.NewDateTimeFromTime(time.Now()),
 	}
 	u, err := s.authRepo.CreateUser(user)
 

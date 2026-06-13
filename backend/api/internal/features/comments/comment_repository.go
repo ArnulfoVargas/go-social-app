@@ -4,7 +4,6 @@ import (
 	"Server/internal/helpers"
 	"Server/internal/store"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
@@ -33,18 +32,18 @@ func (c commentsRepository) AddComment(comment Comment) error {
 	return nil
 }
 
-func (c commentsRepository) GetComments(postId primitive.ObjectID, limit int) ([]Comment, error) {
+func (c commentsRepository) GetComments(postId bson.ObjectID, limit int) ([]Comment, error) {
 	return nil, nil
 }
 
-func (c commentsRepository) GetCommentsCountById(postId primitive.ObjectID) (int64, error) {
+func (c commentsRepository) GetCommentsCountById(postId bson.ObjectID) (int64, error) {
 	return 0, nil
 }
 
-func (c commentsRepository) DeleteComment(commentId primitive.ObjectID) error {
+func (c commentsRepository) DeleteComment(commentId bson.ObjectID) error {
 	return nil
 }
 
-func (c commentsRepository) UpdateComment(commentId primitive.ObjectID, object bson.M) error {
+func (c commentsRepository) UpdateComment(commentId bson.ObjectID, object bson.M) error {
 	return nil
 }

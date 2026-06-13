@@ -7,7 +7,6 @@ import (
 	"errors"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -44,8 +43,8 @@ func (p *postService) CreatePost(userID string, post PostAdd) (Post, error) {
 		Content:   post.Content,
 		Status:    1,
 		Media:     post.Media,
-		CreatedAt: primitive.NewDateTimeFromTime(time.Now()),
-		UpdatedAt: primitive.NewDateTimeFromTime(time.Now()),
+		CreatedAt: bson.NewDateTimeFromTime(time.Now()),
+		UpdatedAt: bson.NewDateTimeFromTime(time.Now()),
 	}
 
 	err = p.postRepo.CreatePost(postModel)
@@ -95,7 +94,7 @@ func (p *postService) UpdatePost(postId string, req UpdatePostRequest) (Post, er
 
 	post := bson.M{
 		"content":   req.Content,
-		"updatedAt": primitive.NewDateTimeFromTime(time.Now()),
+		"updatedAt": bson.NewDateTimeFromTime(time.Now()),
 	}
 
 	p.postRepo.UpdatePost(pId, post)
@@ -152,10 +151,10 @@ func (p *postService) ToggleLike(postId string, userId string) error {
 	like := likes.Like{
 		PostID:    pId,
 		UserID:    uId,
-		ID:        primitive.NewObjectID(),
+		ID:        bson.NewObjectID(),
 		Status:    1,
-		CreatedAt: primitive.NewDateTimeFromTime(time.Now()),
-		UpdatedAt: primitive.NewDateTimeFromTime(time.Now()),
+		CreatedAt: bson.NewDateTimeFromTime(time.Now()),
+		UpdatedAt: bson.NewDateTimeFromTime(time.Now()),
 	}
 
 	err = p.likeRepo.AddLike(like)

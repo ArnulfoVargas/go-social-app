@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
@@ -22,7 +21,7 @@ func NewUserRepository(db *store.Database) UserRepository {
 	}
 }
 
-func (r *userRepository) GetUserById(userId primitive.ObjectID) (*User, error) {
+func (r *userRepository) GetUserById(userId bson.ObjectID) (*User, error) {
 	col := r.collection
 
 	ctx, cancel := helpers.GenerateContext()
@@ -42,7 +41,7 @@ func (r *userRepository) GetUserById(userId primitive.ObjectID) (*User, error) {
 	return &user, nil
 }
 
-func (r *userRepository) UpdateUserById(userId primitive.ObjectID, data bson.M) error {
+func (r *userRepository) UpdateUserById(userId bson.ObjectID, data bson.M) error {
 	col := r.collection
 
 	ctx, cancel := helpers.GenerateContext()
@@ -60,7 +59,7 @@ func (r *userRepository) UpdateUserById(userId primitive.ObjectID, data bson.M) 
 	return nil
 }
 
-func (r *userRepository) UserExistsById(userId primitive.ObjectID) (bool, error) {
+func (r *userRepository) UserExistsById(userId bson.ObjectID) (bool, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -72,7 +71,7 @@ func (r *userRepository) UserExistsById(userId primitive.ObjectID) (bool, error)
 	return count > 0, nil
 }
 
-func (r *userRepository) GetUsersExcluding(excludeIDs []primitive.ObjectID, limit int) ([]User, error) {
+func (r *userRepository) GetUsersExcluding(excludeIDs []bson.ObjectID, limit int) ([]User, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -106,7 +105,7 @@ func (r *userRepository) GetUsersExcluding(excludeIDs []primitive.ObjectID, limi
 	return users, nil
 }
 
-func (r *userRepository) GetUsersByIds(ids []primitive.ObjectID) ([]User, error) {
+func (r *userRepository) GetUsersByIds(ids []bson.ObjectID) ([]User, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -125,7 +124,7 @@ func (r *userRepository) GetUsersByIds(ids []primitive.ObjectID) ([]User, error)
 	return users, nil
 }
 
-func (r *userRepository) GetIdsExcluding(excludeIDs []primitive.ObjectID, limit int) ([]primitive.ObjectID, error) {
+func (r *userRepository) GetIdsExcluding(excludeIDs []bson.ObjectID, limit int) ([]bson.ObjectID, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -156,13 +155,13 @@ func (r *userRepository) GetIdsExcluding(excludeIDs []primitive.ObjectID, limit 
 	defer cursor.Close(ctx)
 
 	var users []struct {
-		ID primitive.ObjectID `bson:"_id"`
+		ID bson.ObjectID `bson:"_id"`
 	}
 	if err := cursor.All(ctx, &users); err != nil {
 		return nil, fmt.Errorf("error decoding users")
 	}
 
-	ids := make([]primitive.ObjectID, len(users))
+	ids := make([]bson.ObjectID, len(users))
 	for i, user := range users {
 		ids[i] = user.ID
 	}
@@ -170,7 +169,7 @@ func (r *userRepository) GetIdsExcluding(excludeIDs []primitive.ObjectID, limit 
 	return ids, nil
 }
 
-func (r *userRepository) DeleteUserById(id primitive.ObjectID) error {
+func (r *userRepository) DeleteUserById(id bson.ObjectID) error {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -186,7 +185,7 @@ func (r *userRepository) DeleteUserById(id primitive.ObjectID) error {
 
 	return nil
 }
-func (r *userRepository) SetProfilePicture(id primitive.ObjectID, media media.Media) error {
+func (r *userRepository) SetProfilePicture(id bson.ObjectID, media media.Media) error {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -200,7 +199,7 @@ func (r *userRepository) SetProfilePicture(id primitive.ObjectID, media media.Me
 	return nil
 }
 
-func (r *userRepository) RemoveProfilePicture(id primitive.ObjectID) error {
+func (r *userRepository) RemoveProfilePicture(id bson.ObjectID) error {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 

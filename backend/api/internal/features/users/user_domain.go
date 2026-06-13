@@ -3,7 +3,6 @@ package users
 import (
 	"Server/internal/features/media"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -17,13 +16,13 @@ type UserService interface {
 }
 
 type UserRepository interface {
-	GetUserById(id primitive.ObjectID) (*User, error)
-	UpdateUserById(id primitive.ObjectID, data bson.M) error
-	UserExistsById(id primitive.ObjectID) (bool, error)
-	GetUsersExcluding(excludeIDs []primitive.ObjectID, limit int) ([]User, error)
-	GetUsersByIds(ids []primitive.ObjectID) ([]User, error)
-	GetIdsExcluding(excludeIDs []primitive.ObjectID, limit int) ([]primitive.ObjectID, error)
-	DeleteUserById(id primitive.ObjectID) error
-	SetProfilePicture(id primitive.ObjectID, media media.Media) error
-	RemoveProfilePicture(id primitive.ObjectID) error
+	GetUserById(id bson.ObjectID) (*User, error)
+	UpdateUserById(id bson.ObjectID, data bson.M) error
+	UserExistsById(id bson.ObjectID) (bool, error)
+	GetUsersExcluding(excludeIDs []bson.ObjectID, limit int) ([]User, error)
+	GetUsersByIds(ids []bson.ObjectID) ([]User, error)
+	GetIdsExcluding(excludeIDs []bson.ObjectID, limit int) ([]bson.ObjectID, error)
+	DeleteUserById(id bson.ObjectID) error
+	SetProfilePicture(id bson.ObjectID, media media.Media) error
+	RemoveProfilePicture(id bson.ObjectID) error
 }

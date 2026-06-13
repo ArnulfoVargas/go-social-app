@@ -1,7 +1,6 @@
 package posts
 
 import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
@@ -18,10 +17,10 @@ type PostService interface {
 
 type PostRepository interface {
 	CreatePost(post Post) error
-	GetPost(postId primitive.ObjectID) (Post, error)
-	DeletePost(postId primitive.ObjectID) error
-	UpdatePost(postId primitive.ObjectID, update bson.M) (Post, error)
-	GetPostsByUserId(userId primitive.ObjectID) ([]Post, error)
-	ExistsById(postId primitive.ObjectID) (bool, error)
-	GetSuggestedPosts(userId primitive.ObjectID, limit int) ([]Post, error)
+	GetPost(postId bson.ObjectID) (Post, error)
+	DeletePost(postId bson.ObjectID) error
+	UpdatePost(postId bson.ObjectID, update bson.M) (Post, error)
+	GetPostsByUserId(userId bson.ObjectID) ([]Post, error)
+	ExistsById(postId bson.ObjectID) (bool, error)
+	GetSuggestedPosts(userId bson.ObjectID, limit int) ([]Post, error)
 }

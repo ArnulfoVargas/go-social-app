@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
@@ -57,7 +56,7 @@ func (p *postRepository) CreatePost(post Post) error {
 	return nil
 }
 
-func (p *postRepository) GetPost(postId primitive.ObjectID) (Post, error) {
+func (p *postRepository) GetPost(postId bson.ObjectID) (Post, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -75,14 +74,14 @@ func (p *postRepository) GetPost(postId primitive.ObjectID) (Post, error) {
 	return post, nil
 }
 
-func (p *postRepository) DeletePost(postId primitive.ObjectID) error {
+func (p *postRepository) DeletePost(postId bson.ObjectID) error {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
 	query := bson.M{"_id": postId}
 	update := bson.M{"$set": bson.M{
 		"status":    0,
-		"updatedAt": primitive.NewDateTimeFromTime(time.Now()),
+		"updatedAt": bson.NewDateTimeFromTime(time.Now()),
 	}}
 	_, err := p.postCollection.UpdateOne(ctx, query, update)
 
@@ -92,7 +91,7 @@ func (p *postRepository) DeletePost(postId primitive.ObjectID) error {
 	return nil
 }
 
-func (p *postRepository) UpdatePost(postId primitive.ObjectID, update bson.M) (Post, error) {
+func (p *postRepository) UpdatePost(postId bson.ObjectID, update bson.M) (Post, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -109,7 +108,7 @@ func (p *postRepository) UpdatePost(postId primitive.ObjectID, update bson.M) (P
 	return p.GetPost(postId)
 }
 
-func (p *postRepository) GetPostsByUserId(userId primitive.ObjectID) ([]Post, error) {
+func (p *postRepository) GetPostsByUserId(userId bson.ObjectID) ([]Post, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -127,7 +126,7 @@ func (p *postRepository) GetPostsByUserId(userId primitive.ObjectID) ([]Post, er
 	return posts, nil
 }
 
-func (p *postRepository) ExistsById(postId primitive.ObjectID) (bool, error) {
+func (p *postRepository) ExistsById(postId bson.ObjectID) (bool, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -139,7 +138,7 @@ func (p *postRepository) ExistsById(postId primitive.ObjectID) (bool, error) {
 	return count > 0, nil
 }
 
-func (p *postRepository) GetSuggestedPosts(userId primitive.ObjectID, limit int) ([]Post, error) {
+func (p *postRepository) GetSuggestedPosts(userId bson.ObjectID, limit int) ([]Post, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 

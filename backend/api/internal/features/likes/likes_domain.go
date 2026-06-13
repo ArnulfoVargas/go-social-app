@@ -1,13 +1,11 @@
 package likes
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "go.mongodb.org/mongo-driver/v2/bson"
 
 type LikeRepository interface {
 	DeleteLike(like Like) error
 	AddLike(like Like) error
-	HasLike(postId, userId primitive.ObjectID) (bool, error)
-	DeleteLikesFromPost(postId primitive.ObjectID) error
-	GetLikesCountByPostId(postId primitive.ObjectID) (int64, error)
+	HasLike(postId, userId bson.ObjectID) (bool, error)
+	DeleteLikesFromPost(postId bson.ObjectID) error
+	GetLikesCountByPostId(postId bson.ObjectID) (int64, error)
 }

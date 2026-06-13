@@ -5,7 +5,6 @@ import (
 	"Server/internal/store"
 	"fmt"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -65,7 +64,7 @@ func (r *followRepository) FollowUser(follow Follow) error {
 	return nil
 }
 
-func (r *followRepository) UnfollowUser(userID, targetUserID primitive.ObjectID) error {
+func (r *followRepository) UnfollowUser(userID, targetUserID bson.ObjectID) error {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -88,7 +87,7 @@ func (r *followRepository) UnfollowUser(userID, targetUserID primitive.ObjectID)
 	return nil
 }
 
-func (r *followRepository) UserIsFollowing(userID, targetUserID primitive.ObjectID) (bool, error) {
+func (r *followRepository) UserIsFollowing(userID, targetUserID bson.ObjectID) (bool, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -100,7 +99,7 @@ func (r *followRepository) UserIsFollowing(userID, targetUserID primitive.Object
 	return count > 0, nil
 }
 
-func (r *followRepository) existsFollowUnscoped(userId, targetId primitive.ObjectID) (bool, error) {
+func (r *followRepository) existsFollowUnscoped(userId, targetId bson.ObjectID) (bool, error) {
 	col := r.collection
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
@@ -113,7 +112,7 @@ func (r *followRepository) existsFollowUnscoped(userId, targetId primitive.Objec
 	return count > 0, nil
 }
 
-func (r *followRepository) GetFollowingCount(userID primitive.ObjectID) (int64, error) {
+func (r *followRepository) GetFollowingCount(userID bson.ObjectID) (int64, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -125,7 +124,7 @@ func (r *followRepository) GetFollowingCount(userID primitive.ObjectID) (int64, 
 	return count, nil
 }
 
-func (r *followRepository) GetFollowersCount(userID primitive.ObjectID) (int64, error) {
+func (r *followRepository) GetFollowersCount(userID bson.ObjectID) (int64, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -137,7 +136,7 @@ func (r *followRepository) GetFollowersCount(userID primitive.ObjectID) (int64, 
 	return count, nil
 }
 
-func (r *followRepository) GetFollowingIds(userID primitive.ObjectID) ([]primitive.ObjectID, error) {
+func (r *followRepository) GetFollowingIds(userID bson.ObjectID) ([]bson.ObjectID, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
@@ -151,14 +150,14 @@ func (r *followRepository) GetFollowingIds(userID primitive.ObjectID) ([]primiti
 	defer cursor.Close(ctx)
 
 	var results []struct {
-		FollowingId primitive.ObjectID `bson:"followingId"`
+		FollowingId bson.ObjectID `bson:"followingId"`
 	}
 
 	if err := cursor.All(ctx, &results); err != nil {
 		return nil, fmt.Errorf("error decoding following ids")
 	}
 
-	followingIds := make([]primitive.ObjectID, len(results))
+	followingIds := make([]bson.ObjectID, len(results))
 	for i, result := range results {
 		followingIds[i] = result.FollowingId
 	}
@@ -166,11 +165,11 @@ func (r *followRepository) GetFollowingIds(userID primitive.ObjectID) ([]primiti
 	return followingIds, nil
 }
 
-func (r *followRepository) GetRelatedFollowSuggestions(userId primitive.ObjectID, followingIds []primitive.ObjectID, limit int) ([]primitive.ObjectID, error) {
+func (r *followRepository) GetRelatedFollowSuggestions(userId bson.ObjectID, followingIds []bson.ObjectID, limit int) ([]bson.ObjectID, error) {
 	ctx, cancel := helpers.GenerateContext()
 	defer cancel()
 
-	excludedIds := make([]primitive.ObjectID, len(followingIds)+1)
+	excludedIds := make([]bson.ObjectID, len(followingIds)+1)
 	copy(excludedIds, followingIds)
 	excludedIds[len(followingIds)] = userId
 
@@ -263,14 +262,14 @@ func (r *followRepository) GetRelatedFollowSuggestions(userId primitive.ObjectID
 	defer cursor.Close(ctx)
 
 	var results []struct {
-		ID primitive.ObjectID `bson:"_id"`
+		ID bson.ObjectID `bson:"_id"`
 	}
 
 	if err := cursor.All(ctx, &results); err != nil {
 		return nil, fmt.Errorf("error decoding related follow suggestions")
 	}
 
-	suggestedIds := make([]primitive.ObjectID, len(results))
+	suggestedIds := make([]bson.ObjectID, len(results))
 	for i, result := range results {
 		suggestedIds[i] = result.ID
 	}

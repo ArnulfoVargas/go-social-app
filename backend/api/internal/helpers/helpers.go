@@ -6,13 +6,13 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v3"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-func ToObjectID(id string) (primitive.ObjectID, error) {
-	oid, err := primitive.ObjectIDFromHex(id)
+func ToObjectID(id string) (bson.ObjectID, error) {
+	oid, err := bson.ObjectIDFromHex(id)
 	if err != nil {
-		return primitive.NilObjectID, fmt.Errorf("invalid id: %s", id)
+		return bson.NilObjectID, fmt.Errorf("invalid id: %s", id)
 	}
 	return oid, nil
 }
