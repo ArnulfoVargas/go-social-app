@@ -12,7 +12,7 @@ type suggestionService struct {
 	followRepo follows.FollowRepository
 }
 
-func NewSuggestionService(userRepo users.UserRepository, followRepo follows.FollowRepository) *suggestionService {
+func NewSuggestionService(userRepo users.UserRepository, followRepo follows.FollowRepository) SuggestionService {
 	return &suggestionService{
 		userRepo:   userRepo,
 		followRepo: followRepo,

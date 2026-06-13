@@ -14,7 +14,7 @@ type followService struct {
 	followRepo FollowRepository
 }
 
-func NewFollowService(userRepo users.UserRepository, followRepo FollowRepository) *followService {
+func NewFollowService(userRepo users.UserRepository, followRepo FollowRepository) FollowService {
 	return &followService{
 		userRepo:   userRepo,
 		followRepo: followRepo,

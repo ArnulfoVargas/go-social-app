@@ -16,7 +16,7 @@ type userRepository struct {
 	collection *mongo.Collection
 }
 
-func NewUserRepository(db *store.Database) *userRepository {
+func NewUserRepository(db *store.Database) UserRepository {
 	return &userRepository{
 		collection: db.Database.Collection("users"),
 	}

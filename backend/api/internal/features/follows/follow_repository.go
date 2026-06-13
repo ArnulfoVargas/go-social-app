@@ -15,9 +15,25 @@ type followRepository struct {
 	collection *mongo.Collection
 }
 
-func NewFollowRepository(db *store.Database) *followRepository {
+func NewFollowRepository(db *store.Database) FollowRepository {
+	col := db.Database.Collection("follows")
+
+	indexes := []mongo.IndexModel{
+		{Keys: bson.D{{Key: "followerId", Value: 1}, {Key: "status", Value: 1}}},
+		{Keys: bson.D{{Key: "followingId", Value: 1}, {Key: "status", Value: 1}}},
+		{
+			Keys:    bson.D{{Key: "followerId", Value: 1}, {Key: "followingId", Value: 1}},
+			Options: options.Index().SetUnique(true),
+		},
+	}
+
+	ctx, cancel := helpers.GenerateContext()
+	defer cancel()
+
+	col.Indexes().CreateMany(ctx, indexes)
+
 	return &followRepository{
-		collection: db.Database.Collection("follows"),
+		collection: col,
 	}
 }
 

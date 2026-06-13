@@ -16,7 +16,7 @@ type profileService struct {
 	postService   posts.PostRepository
 }
 
-func NewProfileService(userRepo users.UserRepository, followRepo follows.FollowRepository, postRepo posts.PostRepository) *profileService {
+func NewProfileService(userRepo users.UserRepository, followRepo follows.FollowRepository, postRepo posts.PostRepository) ProfileService {
 	return &profileService{
 		userService:   userRepo,
 		followService: followRepo,

@@ -17,7 +17,7 @@ type postService struct {
 	userRepo users.UserRepository
 }
 
-func NewPostService(postRepo PostRepository, likeRepo likes.LikeRepository, userRepo users.UserRepository) *postService {
+func NewPostService(postRepo PostRepository, likeRepo likes.LikeRepository, userRepo users.UserRepository) PostService {
 	return &postService{
 		userRepo: userRepo,
 		postRepo: postRepo,

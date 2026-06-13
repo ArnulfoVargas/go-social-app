@@ -15,7 +15,7 @@ type authRepository struct {
 	collection *mongo.Collection
 }
 
-func NewAuthRepository(db *store.Database) *authRepository {
+func NewAuthRepository(db *store.Database) AuthRepository {
 	return &authRepository{
 		collection: db.Database.Collection("users"),
 	}

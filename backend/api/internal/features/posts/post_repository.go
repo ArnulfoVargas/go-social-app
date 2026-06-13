@@ -17,9 +17,31 @@ type postRepository struct {
 	postMediaCollection *mongo.Collection
 }
 
-func NewPostRepository(db *store.Database) *postRepository {
+func NewPostRepository(db *store.Database) PostRepository {
+	col := db.Database.Collection("posts")
+
+	indexes := []mongo.IndexModel{
+		{Keys: bson.D{
+			{Key: "userId", Value: 1},
+			{Key: "status", Value: 1},
+			{Key: "createdAt", Value: -1},
+		}},
+		{Keys: bson.D{
+			{Key: "userId", Value: 1},
+			{Key: "status", Value: 1},
+		}},
+		{Keys: bson.D{
+			{Key: "_id", Value: 1},
+			{Key: "status", Value: 1},
+		}},
+	}
+
+	ctx, cancel := helpers.GenerateContext()
+	defer cancel()
+	col.Indexes().CreateMany(ctx, indexes)
+
 	return &postRepository{
-		postCollection: db.Database.Collection("posts"),
+		postCollection: col,
 	}
 }
 

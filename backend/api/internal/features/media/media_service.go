@@ -15,7 +15,7 @@ type mediaService struct {
 	cld *cloudinary.Cloudinary
 }
 
-func NewMediaService() *mediaService {
+func NewMediaService() MediaService {
 	service := &mediaService{}
 
 	err := service.configureCloudService()

@@ -8,14 +8,27 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type likeRepository struct {
 	collection *mongo.Collection
 }
 
-func NewlikeRepository(db *store.Database) *likeRepository {
-	return &likeRepository{collection: db.Database.Collection("likes")}
+func NewlikeRepository(db *store.Database) LikeRepository {
+	col := db.Database.Collection("likes")
+
+	indexes := []mongo.IndexModel{
+		{Keys: bson.D{{Key: "postId", Value: 1}, {Key: "status", Value: 1}}},
+		{Keys: bson.D{{Key: "userId", Value: 1}, {Key: "postId", Value: 1}}, Options: options.Index().SetUnique(true)},
+	}
+
+	ctx, cancel := helpers.GenerateContext()
+	defer cancel()
+
+	col.Indexes().CreateMany(ctx, indexes)
+
+	return &likeRepository{collection: col}
 }
 
 func (r *likeRepository) DeleteLike(like Like) error {
